@@ -1,13 +1,50 @@
 ---
-title: "257project1"
+title: "Comparison Test Between Univarite and Multivariate ANOVA With White Wine Quality Scores"
+author: "Kei Matsumoto"
+thanks: "Project repository available at: [https://github.com/keimatsumoto1/257project1](https://github.com/keimatsumoto1/257project1)."
+date: today
+date-format: long
+fontsize: 12pt
+abstract: "Abstract here."
+format: pdf
+bibliography: references.bib
 ---
 
-## Quarto
-
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
-
 ```{r}
-1 + 1
+#| echo: false
+#| message: false
+#| warning: false
+#| results: 'hide'
+
+library(tidyverse)
+library(readr)
+winequality_white <- read_delim("Data/winequality-white.csv", 
+                                delim = ";", escape_double = FALSE, trim_ws = TRUE)
+library(rstatix)
 ```
 
-Hello
+# Introduction
+
+The data is provided by the UC Irvine Machine Learning Repository called “Wine Quality”. Each observation is from a Portuguese varietal of both red and white wine called the “Vinho Verde” wine. Each wine will have a score from 0 to 10 indicating a wine’s overall quality. There are 4898 observations for white wines and 1599 observations for red wines highlighting that there has been more white wines taste tested in contrast to red wines for this varietal.
+
+One thing to note upon is the data collection methods. From the UCI Repository, **CITE** the data has been collected from various expert taste tests from 2004 to 2007. Each test is certified through the official wine organization in Portugal known as the Comissão de Viticultura da Região dos Vinhos Verdes (CVRVV) **CITE.** The data does not identify whether each entry was conducted through different people. This can cause an issue with our analysis assumption regarding the independence of observations. If the same expert taste tests two different wines, the expert’s bias may cause a dependency between each observation they submit. 
+
+After testing for missing or outlier prone data, we found that there exists 200 outliers within this dataset using a 1.5 × IQR boundary calculation with the “rstatix” package. 
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+hist(winequality_white$quality, main = "Histogram of White Wine Quality Scores" , xlab = "Quality Score", breaks = seq(from = 0, to = 10, by = 1))
+
+```
+
+By looking at the histogram of the frequency distribution of quality scores, we can see that the overall quality scores are concentrated around 4-6 slightly favoring higher scores like 6 and 7.
+
+# Data
+
+# Methods
+
+# Results
+
+# References
