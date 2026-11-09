@@ -25,6 +25,8 @@ library(rstatix)
 
 # Introduction
 
+# Data
+
 The data is provided by the UC Irvine Machine Learning Repository called “Wine Quality”. Each observation is from a Portuguese varietal of both red and white wine called the “Vinho Verde” wine. Each wine will have a score from 0 to 10 indicating a wine’s overall quality. There are 4898 observations for white wines and 1599 observations for red wines highlighting that there has been more white wines taste tested in contrast to red wines for this varietal.
 
 One thing to note upon is the data collection methods. From the UCI Repository, **CITE** the data has been collected from various expert taste tests from 2004 to 2007. Each test is certified through the official wine organization in Portugal known as the Comissão de Viticultura da Região dos Vinhos Verdes (CVRVV) **CITE.** The data does not identify whether each entry was conducted through different people. This can cause an issue with our analysis assumption regarding the independence of observations. If the same expert taste tests two different wines, the expert’s bias may cause a dependency between each observation they submit. 
@@ -41,9 +43,45 @@ hist(winequality_white$quality, main = "Histogram of White Wine Quality Scores" 
 
 By looking at the histogram of the frequency distribution of quality scores, we can see that the overall quality scores are concentrated around 4-6 slightly favoring higher scores like 6 and 7.
 
-# Data
-
 # Methods
+
+In this paper, we will be comparing the application of multiple univariate ANOVA tests and MANOVA. Both tests will be applied to the "groups" of scores. These groups are split among scores such as 3-4, 5-6, and 7-8. These groups are chosen because there will be too little data for wines that score 1,2,9, and 10.
+
+For ANOVA:
+
+We will apply ANOVA with each dependent variable looking into each score group. To do so, we will need some assumptions.
+
+Normality:
+
+-   The normality assumption can be bypassed by applying the Central Limit Theorem (CLT). Since each quality group has a sample size above 30, each group's distribution can be assumed to be approximately normal.
+
+Homogeneity of Variance:
+
+-   The homogeneity of variance assumption will be violated in a standard ANOVA. Since each group includes sample sizes with large differences, this test will most likely fail.
+
+-   We can apply Levene's Test \[CITATION\] to test the equality of variance for each quality group.
+
+    -   If the Levene's Test fails, we will apply Welch's ANOVA \[CITATION\] which does not require the data to have unequal variances.
+
+    -   Unfortunately, this may introduce a Type II error as we will be "looking" at the data before applying our ANOVA. This can lead to possible false negatives.
+
+    -   So for our overall ANOVA, we will not apply Levene's Test and apply Welch's ANOVA directly without a check.
+
+Independence:
+
+-   The independence assumption will be difficult to prove. As discussed earlier, the UCI Wine Quality Dataset does not state specific observation retrieval methods or list the "expert" who tested each wine. Due to this, we cannot say if each observation is independent to one another. If a single expert has tested multiple wines in our data, then there will be high risk of correlation between those observations.
+
+For MANOVA:
+
+The MANOVA tests include both the Normality and Independence assumption similar to the univariate ANOVA tests. However, the MANOVA requires the variance-covariance matrix to be equal across groups instead of just variances.
+
+Homogeneity of Variances:
+
+-   A similar issues arise to MANOVA as each group has larges differences between sample sizes. Due to this, we cannot apply a standard MANOVA to this dataset
+
+For this paper, we will proceed to apply a standard MANOVA test even though the assumption is violated to understand the comparison to univariate ANOVA tests.
+
+For future imrpovements, we can apply different MANOVA techniques similar to Welch's ANOVA such as PERMANOVA, and MANOVA.RM. \[CITATION\]
 
 # Results
 

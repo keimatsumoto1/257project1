@@ -12,3 +12,15 @@ library(rstatix)
 outliers <- winequality_white %>% identify_outliers(quality)
 
 hist(winequality_white$quality, main = "Histogram of White Wine Quality Scores" , xlab = "Quality Score", breaks = seq(from = 0, to = 10, by = 1))
+
+winequality_white$quality_group <- cut(winequality_white$quality, 
+                        breaks = c(2, 4, 6, 8), 
+                        labels = c("Low", "Medium", "High"))
+
+
+#Levenes Test
+install.packages("car")
+library(car)
+
+levene_result <- leveneTest(quality ~ quality_group, data = winequality_white)
+levene_result
