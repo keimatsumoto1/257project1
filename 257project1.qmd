@@ -4,7 +4,6 @@ author: "Kei Matsumoto"
 thanks: "Project repository available at: [https://github.com/keimatsumoto1/257project1](https://github.com/keimatsumoto1/257project1)."
 date: today
 date-format: long
-fontsize: 12pt
 abstract: "Abstract here."
 format: pdf
 bibliography: references.bib
@@ -31,7 +30,33 @@ The data is provided by the UC Irvine Machine Learning Repository called “Wine
 
 One thing to note upon is the data collection methods. From the UCI Repository, **CITE** the data has been collected from various expert taste tests from 2004 to 2007. Each test is certified through the official wine organization in Portugal known as the Comissão de Viticultura da Região dos Vinhos Verdes (CVRVV) **CITE.** The data does not identify whether each entry was conducted through different people. This can cause an issue with our analysis assumption regarding the independence of observations. If the same expert taste tests two different wines, the expert’s bias may cause a dependency between each observation they submit. 
 
-After testing for missing or outlier prone data, we found that there exists 200 outliers within this dataset using a 1.5 × IQR boundary calculation with the “rstatix” package. 
+Each of the wine observations include the following variables:
+
+-   Fixed acidity
+
+-   Volatile acidity
+
+-   Citric acid
+
+-   Residual sugar
+
+-   Chlorides
+
+-   Free sulfur dioxide
+
+-   Total sulfur dioxide
+
+-   Density
+
+-   pH 10
+
+-   Sulphates
+
+-   Alcohol
+
+-   Quality Score
+
+After testing for missing or outlier prone data, we found that there exists 200 outliers within this dataset using a 1.5 × IQR boundary calculation with the “rstatix” package. Outliers can increase the variation in groups causing an increase chance of Type II error so we will be proceeding to analyze the data without the outliers.
 
 ```{r}
 #| echo: false
@@ -41,7 +66,7 @@ hist(winequality_white$quality, main = "Histogram of White Wine Quality Scores" 
 
 ```
 
-By looking at the histogram of the frequency distribution of quality scores, we can see that the overall quality scores are concentrated around 4-6 slightly favoring higher scores like 6 and 7.
+By looking at the histogram of the frequency distribution of quality scores, we can see that the overall quality scores are concentrated around 4-6 slightly favoring higher scores like 6 and 7. Minimal data exists around the scores of 1, 2, 9, and 10 so we will disregard those scores for our groups. Although this may significantly increase Type II Error, we will continue with this for the sake to compare the analysis types. The issue of choosing which groups are in which range can be perceived differently by different analysts so in many to all settings, creating groups should be avoided unless there are strict definitions set from the dataset provider. For future improvements, we can dive deeper to understand if there are already set splits defined by an official scoring rule book to avoid Type II Error.
 
 # Methods
 
@@ -49,7 +74,7 @@ In this paper, we will be comparing the application of multiple univariate ANOVA
 
 For ANOVA:
 
-We will apply ANOVA with each dependent variable looking into each score group. To do so, we will need some assumptions.
+We will apply ANOVA with each variable looking into each score group. To do so, we will need some assumptions.
 
 Normality:
 
@@ -71,6 +96,8 @@ Independence:
 
 -   The independence assumption will be difficult to prove. As discussed earlier, the UCI Wine Quality Dataset does not state specific observation retrieval methods or list the "expert" who tested each wine. Due to this, we cannot say if each observation is independent to one another. If a single expert has tested multiple wines in our data, then there will be high risk of correlation between those observations.
 
+**EXPLAIN THE VARIABLES FOR EACH TEST (Y=U +...)**
+
 For MANOVA:
 
 The MANOVA tests include both the Normality and Independence assumption similar to the univariate ANOVA tests. However, the MANOVA requires the variance-covariance matrix to be equal across groups instead of just variances.
@@ -79,10 +106,24 @@ Homogeneity of Variances:
 
 -   A similar issues arise to MANOVA as each group has larges differences between sample sizes. Due to this, we cannot apply a standard MANOVA to this dataset
 
-For this paper, we will proceed to apply a standard MANOVA test even though the assumption is violated to understand the comparison to univariate ANOVA tests.
+For this paper, we will proceed to apply a standard MANOVA test even though the assumption is violated to understand the comparison to univariate ANOVA tests. We expect MANOVA to tell us that there exists at least either a singular or combination of variables that differs between quality groups. We expect the singular ANOVA tests to tell us directly whether each individual variable differs between quality groups. If MANOVA identifies a difference and the ANOVAs do not, then there exists at least one joint combination of variables that is significantly different between groups and that each individual variable does not matter independently.
 
-For future imrpovements, we can apply different MANOVA techniques similar to Welch's ANOVA such as PERMANOVA, and MANOVA.RM. \[CITATION\]
+**EXPLAIN THE VARIABLES FOR EACH TEST (Y=U +...)**
+
+For future improvements, we can apply different MANOVA techniques similar to Welch's ANOVA such as PERMANOVA, and MANOVA.RM. \[CITATION\]
 
 # Results
+
+After conducting both MANOVA and multiple Welch's ANOVAs, we can notice multiple things. With MANOVA, our output results a pvalue of 2.2e-16. This means that there exists at least one dependent variable that differs between between two or more quality groups. The MANOVA's output will not tell us which variable has this significant difference. For example, the output does not tell us if fixed acidity is significantly different or if a combination of variables is significantly different. The combination of fixed acidity, volatile acidity, and citric acid may contribute to a difference between groups but the independent variables may not. To check this, we would need to proceed with individual ANOVA tests.
+
+For our univariate Welch's ANOVAs, our results show that every variable chosen has a significant difference between quality groups. Every p-value for these tests output values lower than our alpha which is 0.05/11 after applying a Bonferroni Correction with 11 variables. This confirms our previous statement where each individual acidity variable has a significant difference between groups independent from each other. However, neither ANOVA nor MANOVA will tell us which combination of variables is best, if we want to predict a certain wine's quality. To do so, we will need to carryout a multiple linear regression since we have one dependent variable and multiple independent variables.
+
+**Possibly add a table of all the pvalues to make it look nice**
+
+# Discussion
+
+**In the final section of the paper, briefly summarize your key findings, discuss
+potential weaknesses of your study, and identify potential improvements and extensions
+or future areas of related research.**
 
 # References
