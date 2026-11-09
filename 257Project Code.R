@@ -51,7 +51,6 @@ oneway.test(sulphates ~ quality_group, data = winequality_white, var.equal = FAL
 
 oneway.test(alcohol ~ quality_group, data = winequality_white, var.equal = FALSE)
 
-oneway.test(cbind(`fixed acidity`, `volatile acidity`, `citric acid`) ~ quality_group, data = winequality_white, var.equal = FALSE)
 
 #Single ANOVAs Standard
 summary.aov(manovaW)
