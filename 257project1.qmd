@@ -232,6 +232,7 @@ For our univariate Welch's ANOVAs, our results show that every variable chosen h
 #| message: false
 #| warning: false
 #| label: tbl-pval
+#| tbl-pos: "H"
 #| tbl-cap: "A table for all 11 p-values for each univariate ANOVA test."
 
 t1 = oneway.test(`fixed acidity` ~ quality_group, data = winequality_white, var.equal = FALSE)
