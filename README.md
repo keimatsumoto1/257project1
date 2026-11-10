@@ -4,9 +4,7 @@ Project repository for MATH 257 written by Kei Matsumoto 11/9/2027
 
 ## Structure
 
-The structure of the project folder goes as follows: 
-- The data folder will include all datasets used. 
-- The paper and code will be included within the overall project repository as I was unable to render into a specific folder.
+The structure of the project folder goes as follows: - The data folder will include all datasets used. - The paper and code will be included within the overall project repository as I was unable to render into a specific folder.
 
 ## Data
 

@@ -25,11 +25,11 @@ library(rstatix)
 
 winequality_white <- read_delim("Data/winequality-white.csv", 
                                 delim = ";", escape_double = FALSE, trim_ws = TRUE)
+ 
+# summary(winequality_white)
 
-#summary(winequality_white)
 
-
-# Identify outliers
+# Outliers
 outliers <- winequality_white %>% identify_outliers(quality)
 
 winequality_white$quality_group <- cut(winequality_white$quality, 
