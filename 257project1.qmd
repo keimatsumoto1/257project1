@@ -1,5 +1,5 @@
 ---
-title: "Comparison Analysis Between Univarite and Multivariate ANOVA on Portuguese White Wine Quality Scores"
+title: "Understanding the Difference Between Univariate and Multivariate ANOVA with Portuguese White Wine Quality Scores"
 author: "Kei Matsumoto"
 thanks: "Project repository available at: [https://github.com/keimatsumoto1/257project1](https://github.com/keimatsumoto1/257project1)."
 date: today
@@ -39,13 +39,13 @@ winequality_white$quality_group <- cut(winequality_white$quality,
 
 # Introduction
 
-Although ANOVA and MANOVA share extreme similarities, it doesn't just mean that one has more dimensions than the other. There are many misconceptions on the applications of each analysis. While they share similar outputs, they can mean completely different outcomes. In addition, many researchers may want to conduct ANOVA after running a MANOVA onto their data. This can lead to an inflated Type II Error, damaging the overall analysis.
+Although ANOVA and MANOVA share many similarities, it doesn't just mean that one has more dimensions than the other. There are many misconceptions on the applications of each analysis. While they share similar outputs, they can mean completely different outcomes. In addition, many researchers may want to conduct ANOVA after running MANOVA onto their data. This can lead to an inflated Type II Error, damaging the overall analysis.
 
-This paper will run both ANOVA and MANOVA onto a dataset presented by the UC Irvine Machine Learning Repository. The dataset "Wine Quality" [@paulo_cortez_wine_2009] includes red and white wine quality characteristics such as acidity, pH, sugar, chlorides, density, etc. We will apply the two different tests to see if any of these variables have different means between different quality groups. Each quality group is determined by the score of the wine. These groups are low (scores 3-4), medium (scores 5-6) and high (scores 7-8). Scores of 1,2,9, and 10 have minimal to no data within this dataset so they will disregarded within these groups.
+This paper will run both ANOVA and MANOVA onto a dataset presented by the UC Irvine Machine Learning Repository. The dataset "Wine Quality" [@paulo_cortez_wine_2009] includes red and white wine quality characteristics such as acidity, pH, sugar, chlorides, density, etc. We will apply the two different tests to see if any of these variables have different means between different quality groups. Each quality group is determined by the score of the wine. These groups are low (scores 3-4), medium (scores 5-6) and high (scores 7-8). Scores of 1,2,9, and 10 have minimal to no data within this dataset so they will be disregarded for this analysis.
 
-The key difference between ANOVA and MANOVA is that MANOVA includes multiple continuous dependent variables that are test simultaneously. MANOVA can calculate whether at least one or a combination of variables have a significant difference between groups. MANOVA will prevent false positives also known as Type 1 Errors from increasing in contrast to running many singular ANOVA tests.
+The key difference between ANOVA and MANOVA is that MANOVA includes multiple continuous dependent variables that are tested simultaneously. MANOVA can calculate whether at least one or a combination of variables have a significant difference between groups means. MANOVA will reduce false positives also known as Type 1 Errors from increasing in contrast to running many singular ANOVA tests.
 
-In this paper, we will see that both MANOVA and 11 ANOVA tests result with significantly small p-values. MANOVA tells us that at least one or a combination of variables has a significant difference between wine quality groups. Each ANOVA test will specifically state whether the independent variable alone has a significant difference between quality groups. As said previously, running 11 ANOVA tests will increase our false positive rates. In addition, ANOVA tests will only tell us if the singular variable alone has a significant difference. In some scenarios, ANOVA may not result in any significant results while MANOVA does. MANOVA can detect whether combinations of variables can differ between groups unlike ANOVA. Lastly, we will discuss different MANOVA methods that could improve this study, as there are many assumption corrections we will stumble upon.
+In this paper, we will see that both MANOVA and 11 ANOVA tests result with significantly small p-values. MANOVA tells us that at least one or a combination of variables has a significant difference between wine quality group means. Each ANOVA test will specifically state whether the independent variable alone has a significant difference between quality group means. As said previously, running 11 ANOVA tests will increase our false positive rates. In addition, ANOVA tests will only tell us if the singular variable alone has a significant difference. In some scenarios, ANOVA may not result in any significant results while MANOVA does. MANOVA can detect whether combinations of variables can differ between groups unlike ANOVA. The choice for either test will be reliant on the correlation between the variables within the dataset. If there are moderate correlations and negative correlation between the variables, then MANOVA will tend to excel in comaprison to ANOVA. Lastly, we will discuss different MANOVA methods that could improve this study, as there are many assumption corrections we will stumble upon.
 
 # Data
 
@@ -79,7 +79,7 @@ Each of the wine observations include the following variables:
 
 -   Quality Score: The final score given from 1 to 10.
 
-After testing for missing or outlier prone data, we found that there exists 200 outliers within this dataset using a 1.5 × IQR boundary calculation with the “rstatix” package. Outliers can increase the variation in groups causing an increase chance of Type II error so we will be proceeding to analyze the data without the outliers.
+After testing for missing or outlier prone data, we found that there exists 200 outliers within this dataset using a 1.5 × IQR boundary calculation. Outliers can increase the variation in groups causing an increase chance of Type II error so we will be proceeding to analyze the data without the outliers.
 
 ```{r}
 #| echo: false
@@ -91,9 +91,11 @@ hist(winequality_white$quality, main = "Histogram of White Wine Quality Scores" 
 
 ```
 
-By looking at the histogram of the frequency distribution of quality scores, we can see that the overall quality scores are concentrated around 4-6 slightly favoring higher scores like 6 and 7. Minimal data exists around the scores of 1, 2, 9, and 10 so we will disregard those scores for our groups. Although this may significantly increase Type II Error, we will continue with this for the sake to compare the analysis types. The issue of choosing which groups are in which range can be perceived differently by different analysts so in many to all settings, creating groups should be avoided unless there are strict definitions set from the dataset provider. For future improvements, we can dive deeper to understand if there are already set splits defined by an official scoring rule book to avoid Type II Error.
+By looking at the histogram of the frequency distribution, we can see that the overall quality scores are concentrated around 4-6 slightly favoring higher scores like 6 and 7. Minimal data exists around the scores of 1, 2, 9, and 10 so we will disregard those scores for our groups. Although this may significantly increase Type II Error, we will continue with this for the sake to compare the analysis types. The issue of choosing which groups are in which range can be perceived differently by different analysts so in many to all settings, creating groups should be avoided unless there are strict definitions set from the dataset provider. For future improvements, we can dive deeper to understand if there are already set splits defined by an official scoring rule book to avoid Type II Error.
 
 # Methods
+
+We will be using R [@noauthor_r:_nodate] as well as packages from R such as "Rstatix" "ggcorrplot" "knitr" "readr" to conduct our tests.
 
 In this paper, we will be comparing the application of multiple univariate ANOVA tests and MANOVA. Both tests will be applied to the "groups" of scores. These groups are split among scores such as 3-4, 5-6, and 7-8. These groups are chosen because there will be too little data for wines that score 1,2,9, and 10.
 
@@ -129,11 +131,11 @@ $$
 
 Where:
 
--   $X_{lj}$ represents the wine's variable level at each observation (acidity, sugars, pH, etc).
+-   $X_{lj}$ represents the wine's singular variable level at each observation (acidity, sugars, pH, etc).
 
--   $\mu$ represents the overall average of the wine's quality.
+-   $\mu$ represents the overall average of the specific variable.
 
--   $\tau_l$ represents each treatment or quality group of the wine.
+-   $\tau_l$ represents each treatment or quality group of the wine with $l$ ranging from 1,2,3
 
 -   $\epsilon_{lj}$ represents the error for the specific observation. The error is iid(N0, $\sigma^2$).
 
@@ -155,7 +157,7 @@ Where each at least one group (low,medium,high) is not equal to 0.
 
 **For MANOVA:**
 
-The MANOVA tests include both the Normality and Independence assumption similar to the univariate ANOVA tests. However, the MANOVA requires the variance-covariance matrix to be equal across groups instead of just variances. In addition, MANOVA requires that each variable has a slight multicollinearity.
+The MANOVA tests include both the Normality and Independence assumption similar to the univariate ANOVA tests. However, the MANOVA requires the variance-covariance matrix to be equal across groups instead of just variances. In addition, MANOVA requires that each variable has a slight correlation between each other.
 
 Homogeneity of Variances:
 
@@ -185,8 +187,6 @@ ggcorrplot(wine_corr_matrix,
   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))
 ```
 
-For this paper, we will proceed to apply a standard MANOVA test even though the assumption is violated to understand the comparison to univariate ANOVA tests. We expect MANOVA to tell us that there exists at least either a singular or combination of variables that differs between quality groups. We expect the singular ANOVA tests to tell us directly whether each individual variable differs between quality groups. If MANOVA identifies a difference and the ANOVAs do not, then there exists at least one joint combination of variables that is significantly different between groups and that each individual variable does not matter independently.
-
 We can write the model for MANOVA as the following:
 
 $$
@@ -195,11 +195,11 @@ $$
 
 Where:
 
--   $X_{lj}$ represents a vector of wine's variable level at each observation (acidity, sugars, pH, etc). This can also be any combinations of the variables as well.
+-   $X_{lj}$ represents a vector of wine's variable level at each observation (acidity, sugars, pH, etc). This can also be any combinations of the variables.
 
--   $\mu$ represents the overall average of the wine's quality.
+-   $\mu$ represents the overall average of the specific variable(s).
 
--   $\tau_l$ represents each treatment or quality group of the wine.
+-   $\tau_l$ represents each treatment or quality group of the wine with $l$ ranging from 1,2,3.
 
 -   $\epsilon_{lj}$ represents the error for the specific observation. The errors are independent $N_p(0, \sigma^2)$
 
@@ -219,13 +219,17 @@ $$
 
 Where each at least one group (low,medium,high) is not equal to 0.
 
-For future improvements, we can apply different MANOVA techniques similar to Welch's ANOVA such as MANOVA.RM. [@friedrich_manova.rm:_2026]
+Even though we stated that the variance-covariance homogeneity may be broken, MANOVA will also introduce the Pillai's Trace with two dimensions. The Pillai's Trace will help the calculation between groups with different variance and covariances and controls the quality groups by scaling the variation.
+
+For this paper, we will proceed to apply a standard MANOVA test even though the assumption is violated to understand the comparison to univariate ANOVA tests. We expect MANOVA to tell us that there exists at least either a singular or combination of variables that differs between quality groups. We expect the singular ANOVA tests to tell us directly whether each individual variable differs between quality groups. If MANOVA identifies a difference and the ANOVAs do not, then there exists at least one joint combination of variables that is significantly different between groups and that each individual variable does not matter independently.
+
+For future improvements, we can test different MANOVA techniques similar to Welch's ANOVA such as MANOVA.RM. [@friedrich_manova.rm:_2026]
 
 # Results
 
-After conducting both MANOVA and multiple Welch's ANOVAs, we can notice multiple things. With MANOVA, our output results a p-value of 2.2e-16. This means that there exists at least one dependent variable that differs between between two or more quality groups. The MANOVA's output will not tell us which variable has this significant difference. For example, the output does not tell us if fixed acidity is significantly different or if a combination of variables is significantly different. The combination of fixed acidity, volatile acidity, and citric acid may contribute to a difference between groups but the independent variables may not. To check this, we would need to proceed with individual ANOVA tests.
+After conducting both MANOVA and multiple Welch's ANOVAs, we can notice multiple things. With MANOVA, our output results a p-value of 2.2e-16. This means that there exists at least one variable that differs between two or more quality group means. The MANOVA's output will not tell us which variable has this significant difference. For example, the output does not tell us if fixed acidity is significantly different or if a combination of variables is significantly different. The combination of fixed acidity, volatile acidity, and citric acid may contribute to a difference between group means but the independent variables may not. To check this, we would need to proceed with individual ANOVA tests.
 
-For our univariate Welch's ANOVAs, our results show that every variable chosen has a significant difference between quality groups. Every p-value shown in @tbl-pval has output values lower than our alpha which is 0.05/11 after applying a Bonferroni Correction with 11 variables. This confirms our previous statement where each individual acidity variable has a significant difference between groups independent from each other.
+For our univariate Welch's ANOVAs, our results show that every variable chosen has a significant difference between quality group means. Every p-value shown in @tbl-pval has output values lower than our alpha which is 0.05/11 after applying a Bonferroni Correction with 11 variables. This means that each individual variable has a significant difference between quality group means when isolated from each other. This does not mean that each variable is independent from each other. This can be further proven by looking back at the @fig-corr from before. Overall when observing each variable isolated, we can identify that they affect a wine's quality score.
 
 ```{r}
 #| echo: false
@@ -273,8 +277,8 @@ kable(tab2, format = "latex", table.envir = "table", align = c('l', 'c'), col.na
 
 # Discussion
 
-In this paper, we found that both MANOVA and ANOVAs results have show significant p-values. For MANOVA, the p-value indicates that there exists at least one variable or a combination of variables that are different between at least 2 wine quality groups. For the 11 ANOVAs, the p-values indicate that all of the variables independently have significantly different values between at least 2 wine quality groups. In addition, the 11 ANOVAs will also increase our Type 1 error rate due to conducting 11 separate tests instead of 1 singular MANOVA. We want to apply MANOVA to tell us if a combination of variables has a significant difference across groups. In contrast, if we want to know if individual variables have different values across groups, then we want to apply individual ANOVAs. I
+In this paper, we found that both MANOVA and ANOVAs results show significant p-values. For MANOVA, the p-value indicates that there exists at least one variable or a combination of variables that are different between at least 2 wine quality group means. For the 11 ANOVAs, the p-values indicate that all of the variables independently have significantly different values between at least 2 wine quality group means. In addition, the 11 ANOVAs will also increase our Type 1 error rate due to conducting 11 separate tests instead of 1 singular MANOVA. We want to apply MANOVA to tell us if a combination of variables has a significant difference across groups means. In contrast, if we want to know if individual variables have different values across group means, then we want to apply individual ANOVAs. The decision between ANOVA and MANOVA will rely on the variables given. If we notice that some variables like the three acidity variables may seem correlated, carrying out a MANOVA maybe more beneficial as ANOVA will not tell us the combination between multiple dependent variables. If we know that each variable is strictly independent between each other, then carrying out singular ANOVAs will be beneficial. @fig-corr identifies many negative correlations and moderate correlations between each variable. This is a key characteristic that MANOVA excels compared to ANOVA. If the correlation were 0 or close to 1, then ANOVA would be preferred.
 
-As said in the methods section, MANOVA's assumptions are not met for this dataset. The data does not include independent variance-covariances violating one of the assumptions for MANOVA. For future tests, we can possibly conduct different types of MANOVA methods such as MANOVA.RM which can help analyze data with unequal variance-covariances across groups. Since neither MANOVA nor ANOVA will provide information for prediction, carrying out multiple linear regression may be beneficial if we want to predict wine quality scores given the variables.
+As said in the methods section, MANOVA's assumptions are not met for this dataset. The data does not include independent variance-covariances, due to varying sample sizes, violating one of the assumptions for MANOVA. For future tests, we can possibly compare different types of MANOVA methods such as MANOVA.RM which can help analyze data with unequal variance-covariances across groups with varying sample sizes. Both MANOVA and ANOVA will only tell us if there is an effect of a variable rather than a direction. If we want to carry out prediction in the future, multiple linear regression may be beneficial if we want to predict wine quality scores given the variables.
 
 # References
