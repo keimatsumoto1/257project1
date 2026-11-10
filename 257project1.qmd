@@ -49,7 +49,7 @@ In this paper, we will see that both MANOVA and 11 ANOVA tests result with signi
 
 # Data
 
-The data is provided by the UC Irvine Machine Learning Repository called “Wine Quality”. [@paulo_cortez_wine_2009] Each observation is from a Portuguese varietal of both red and white wine called the “Vinho Verde” wine. Each wine will have a score from 0 to 10 indicating a wine’s overall quality. There are 4898 observations for white wines and 1599 observations for red wines highlighting that there has been more white wines taste tested in contrast to red wines for this varietal.
+The data is provided by the UC Irvine Machine Learning Repository called “Wine Quality”. [@paulo_cortez_wine_2009] Each observation is from a Portuguese varietal of both red and white wine called the “Vinho Verde” wine. Each wine will have a score from 0 to 10 indicating a wine’s overall quality. There are 4898 observations for white wines and 1599 observations for red wines highlighting that there has been more white wines taste tested in contrast to red wines for this varietal. We will be testing our methodology onto white wines.
 
 One thing to note upon is the data collection methods. From the UCI Repository, the data has been collected from various expert taste tests from 2004 to 2007. Each test is certified through the official wine organization in Portugal known as the Comissão de Viticultura da Região dos Vinhos Verdes (CVRVV) [@verde_cvrvv_nodate]. The data does not identify whether each entry was conducted through different people. This can cause an issue with our analysis assumption regarding the independence of observations. If the same expert taste tests two different wines, the expert’s bias may cause a dependency between each observation they submit. 
 
@@ -123,7 +123,9 @@ Independence:
 
 We can write the model for ANOVA as the following:
 
-$X_{lj} = \mu +\tau_l + \epsilon_{lj}$
+$$
+X_{lj} = \mu +\tau_l + \epsilon_{lj} 
+$$
 
 Where:
 
@@ -137,13 +139,17 @@ Where:
 
 The test will see if the following null hypothesis is true:
 
-$H_0 : \tau_1 = \tau_2 = \tau_3 = 0$
+$$
+H_0 : \tau_1 = \tau_2 = \tau_3 = 0
+$$
 
 Where each treatment group (low,medium,high) is equal to 0.
 
 Our alternative hypothesis will be:
 
-$H_a : atleast \ one \ \tau_l  \ne 0$
+$$
+H_a : atleast \ one \ \tau_l  \ne 0
+$$
 
 Where each at least one group (low,medium,high) is not equal to 0.
 
@@ -183,7 +189,9 @@ For this paper, we will proceed to apply a standard MANOVA test even though the 
 
 We can write the model for MANOVA as the following:
 
-$X_{lj} = \mu +\tau_l + \epsilon_{lj}$
+$$
+X_{lj} = \mu +\tau_l + \epsilon_{lj}
+$$
 
 Where:
 
@@ -197,13 +205,17 @@ Where:
 
 The test will see if the following null hypothesis is true:
 
-$H_0 : \tau_1 = \tau_2 = \tau_3 = 0$
+$$
+H_0 : \tau_1 = \tau_2 = \tau_3 = 0
+$$
 
 Where each treatment group (low,medium,high) is equal to 0.
 
 Our alternative hypothesis will be:
 
-$H_a : atleast \ one \ \tau_l  \ne 0$
+$$
+H_a : atleast \ one \ \tau_l  \ne 0
+$$
 
 Where each at least one group (low,medium,high) is not equal to 0.
 
