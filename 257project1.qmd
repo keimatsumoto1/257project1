@@ -225,6 +225,8 @@ For future improvements, we can apply different MANOVA techniques similar to Wel
 
 After conducting both MANOVA and multiple Welch's ANOVAs, we can notice multiple things. With MANOVA, our output results a p-value of 2.2e-16. This means that there exists at least one dependent variable that differs between between two or more quality groups. The MANOVA's output will not tell us which variable has this significant difference. For example, the output does not tell us if fixed acidity is significantly different or if a combination of variables is significantly different. The combination of fixed acidity, volatile acidity, and citric acid may contribute to a difference between groups but the independent variables may not. To check this, we would need to proceed with individual ANOVA tests.
 
+For our univariate Welch's ANOVAs, our results show that every variable chosen has a significant difference between quality groups. Every p-value shown in @tbl-pval has output values lower than our alpha which is 0.05/11 after applying a Bonferroni Correction with 11 variables. This confirms our previous statement where each individual acidity variable has a significant difference between groups independent from each other.
+
 ```{r}
 #| echo: false
 #| message: false
@@ -263,12 +265,10 @@ tab <- data.frame(
 tab2 <- tab
 tab2$P_Value <- formatC(tab2$P_Value, format = "e", digits = 4)
 
-kable(tab2, format = "latex", table.envir = "table", align = c('l', 'c'), col.names = c("Variable", "p-value"), position = "h!")
+kable(tab2, format = "latex", table.envir = "table", align = c('l', 'c'), col.names = c("Variable", "p-value"))
 
 
 ```
-
-For our univariate Welch's ANOVAs, our results show that every variable chosen has a significant difference between quality groups. Every p-value shown in @tbl-pval has output values lower than our alpha which is 0.05/11 after applying a Bonferroni Correction with 11 variables. This confirms our previous statement where each individual acidity variable has a significant difference between groups independent from each other.
 
 # Discussion
 
